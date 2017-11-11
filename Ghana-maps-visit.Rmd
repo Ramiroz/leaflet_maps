@@ -1,0 +1,38 @@
+---
+title: "Ghana Visit - Top spots"
+author: "Ramy Hashem"
+date: "November 11, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+## Leaflet Maps
+
+In this module, I created a map of my city of residence Accra - Ghana.  
+I've listed my top spots out of 3 years living here.
+
+I've created layers on the map for the following:  
+1. Outings, restaurants (my favorite ones in Accra)  
+2. Top attractions and sight seeing  
+3. My Office location (Nokia Networks)  
+
+#### Note:   
+1- *Click on Icons to see my comments*  
+2- *Click on layer 'top right' to show/hide groups*  
+
+```{r maps}
+library(leaflet)
+
+# Read csv file
+maps <- read.csv(file = "data.csv")
+
+# Load the icons for 3 different groups
+maps_icon <- iconList(Work = makeIcon("office.png",,24,24,24,24), Outings=makeIcon("restaurant.png",,24,24,24,24), Sights = makeIcon("sight.png",,24,24,24,24))
+
+# Load the map from the file. with Labels and different icons
+maps %>% leaflet() %>% addTiles() %>% addMarkers(label=~Item, popup = ~Description, icon = ~maps_icon[Group], group = ~Group) %>% addLayersControl(overlayGroups = ~Group, options = layersControlOptions(collapsed = FALSE))
+
+```
